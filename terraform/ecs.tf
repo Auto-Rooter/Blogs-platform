@@ -19,12 +19,16 @@ resource "aws_ecs_task_definition" "app" {
             ]
             environment = [
                 {
-                    name = "MONGO_URI"
+                    name = "MONGODB_URI"
                     value = var.mongo_uri
                 },
                 {
                     name = "JWT_SECRET"
                     value = var.jwt_secret
+                },
+                {
+                    name  = "PORT"
+                    value = "5000"
                 }
             ]
             logConfiguration = {
