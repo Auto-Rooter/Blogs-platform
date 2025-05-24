@@ -19,7 +19,7 @@ dotenv.config();
 
 const app = express();
 const swaggerSpec = swaggerJSDoc(swaggerOptions)
-const PORT = process.env.PORT || 5000;
+const PORT = parseInt(process.env.PORT || '5000', 10);
 
 app.use(cors());
 app.use(express.json());
@@ -55,9 +55,9 @@ app.get('/', (req, res) => {
 // Connect to MongoDB and start the server
 connectDB()
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`[+] Server is running on http://localhost:${PORT}`);
-      console.log(`[+] Swagger Docs available at http://localhost:${PORT}/api/docs`);
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`[+] Server is running on http://0.0.0.0:${PORT}`);
+      console.log(`[+] Swagger Docs available at http://0.0.0.0:${PORT}/api/docs`);
     });
   })
   .catch((error: Error) => {
