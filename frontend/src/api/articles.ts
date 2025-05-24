@@ -1,4 +1,3 @@
-import { submitTimeSpent } from './../../../backend/src/controllers/article.controller';
 import axios from "./axios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Article, ArticleResponse } from "../types/article";
