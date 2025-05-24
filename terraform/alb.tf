@@ -2,7 +2,7 @@ resource "aws_lb" "main_lb" {
   name = "${var.project_name}-alb"
   internal = false
   load_balancer_type = "application"
-  subnets = aws_route_table.public[*].id
+  subnets = aws_subnet.public[*].id
 
   tags = {
     Name = "${var.project_name}-alb"
@@ -15,6 +15,7 @@ resource "aws_alb_target_group" "app" {
     protocol = "HTTP"
     vpc_id = aws_vpc.main.id
 
+    target_type = "ip"
     health_check {
         path = "/"
         interval = 30
