@@ -16,6 +16,9 @@ jobs:
   # 1) Checkout > install > lint/test(will enable it later MAybe with Husky) > build
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+        MONGODB_URI:     ${{ secrets.MONGODB_URI }}
+        JWT_SECRET:    ${{ secrets.JWT_SECRET }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
