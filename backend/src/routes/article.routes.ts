@@ -14,8 +14,8 @@ import { requireRole } from "../middlewares/roles";
 import { verifyJWT } from '../middlewares/auth';
 const upload = multer({ storage: multer.memoryStorage() });
 const router = express.Router();
-router.get('/export', asyncHandler(exportAllArticles));
-router.post('/import', upload.single('file'), asyncHandler(importAllArticles));
+router.get('/export', verifyJWT, requireRole("admin"), asyncHandler(exportAllArticles));
+router.post('/import', verifyJWT, requireRole("admin"), upload.single('file'), asyncHandler(importAllArticles));
 
 /**
  * @swagger
