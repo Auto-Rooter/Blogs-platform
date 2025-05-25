@@ -14,22 +14,119 @@ import { requireRole } from "../middlewares/roles";
 import { verifyJWT } from '../middlewares/auth';
 const upload = multer({ storage: multer.memoryStorage() });
 const router = express.Router();
+
+/**
+ * @swagger
+ * /api/articles/export:
+ *   get:
+ *     summary: Export all articles as JSON
+ *     tags: [Articles]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: A JSON file download of all articles
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Article'
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ */
 router.get('/export', verifyJWT, requireRole("admin"), asyncHandler(exportAllArticles));
+
+/**
+ * @swagger
+ * /api/articles/import:
+ *   post:
+ *     summary: Import articles from a JSON file
+ *     tags: [Articles]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - file
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       201:
+ *         description: Articles imported successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 articles:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Article'
+ *       400:
+ *         description: No file uploaded
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ *       500:
+ *         description: Import failed
+ */
 router.post('/import', verifyJWT, requireRole("admin"), upload.single('file'), asyncHandler(importAllArticles));
 
 /**
  * @swagger
  * /api/articles:
  *   get:
- *     summary: Get all articles
+ *     summary: Get paginated list of articles
  *     tags: [Articles]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 8
+ *         description: Number of articles per page
  *     responses:
  *       200:
- *         description: List of articles
+ *         description: Paginated articles response
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 articles:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Article'
+ *                 total:
+ *                   type: integer
+ *                 page:
+ *                   type: integer
+ *                 totalPages:
+ *                   type: integer
  *
  *   post:
- *     summary: Create an article
+ *     summary: Create a new article
  *     tags: [Articles]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -47,14 +144,25 @@ router.post('/import', verifyJWT, requireRole("admin"), upload.single('file'), a
  *     responses:
  *       201:
  *         description: Article created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Article'
+ *       400:
+ *         description: Missing fields
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
  */
 router.get("/", asyncHandler(getArticles));
+router.post("/", verifyJWT, requireRole("author"), asyncHandler(createArticle));
 
 /**
  * @swagger
  * /api/articles/{id}:
  *   get:
- *     summary: Get article by ID
+ *     summary: Get a single article by ID
  *     tags: [Articles]
  *     parameters:
  *       - in: path
@@ -62,34 +170,49 @@ router.get("/", asyncHandler(getArticles));
  *         required: true
  *         schema:
  *           type: string
+ *         description: Article ID
  *     responses:
  *       200:
- *         description: Single article
+ *         description: Article object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Article'
+ *       400:
+ *         description: Invalid ID
  *       404:
  *         description: Not found
  *
  *   delete:
- *     summary: Delete article
+ *     summary: Delete an article by ID
  *     tags: [Articles]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
+ *         description: Article ID
  *     responses:
  *       204:
- *         description: Deleted
+ *         description: Deleted successfully (no content)
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ *       404:
+ *         description: Not found
  */
 router.get("/:id", asyncHandler(getArticleById));
-router.post("/", verifyJWT, requireRole("author"), asyncHandler(createArticle));
 router.delete("/:id", verifyJWT, requireRole("admin"), asyncHandler(deleteArticle));
 
 /**
  * @swagger
- * /api/articles/{id}/time:
+ * /api/articles/{id}/time-spent:
  *   post:
- *     summary: Submit time spent on article
+ *     summary: Submit time spent reading an article
  *     tags: [Articles]
  *     parameters:
  *       - in: path
@@ -112,7 +235,11 @@ router.delete("/:id", verifyJWT, requireRole("admin"), asyncHandler(deleteArticl
  *                 description: Time in seconds
  *     responses:
  *       200:
- *         description: Time logged successfully
+ *         description: Time recorded successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Article'
  *       400:
  *         description: Invalid input
  *       404:
