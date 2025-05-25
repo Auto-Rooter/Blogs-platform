@@ -45,7 +45,7 @@ const ArticleList = () => {
                     <div className="flex justify-between items-center mt-4 text-sm text-gray-500">
                       <span>👁️ {article.views} views</span>
                       <span>⭐ {getAvgRating(article.ratings || [])} </span>
-                      <span>⏱ {getTimeSpent(article.timeSpent || 0)} </span>
+                      <span>⏱  {getTimeSpent(article.timeSpent || 0)} </span>
                       <DeleteArticle isAdmin={isAdmin} articleId={article._id}/>
                     </div>
               </div>
