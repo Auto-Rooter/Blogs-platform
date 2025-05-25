@@ -24,6 +24,7 @@ const Header = () => {
 
       {/* Desktop Links */}
       <div className="hidden md:flex items-center space-x-4">
+        {user && <span className="text-lg">Hi, {user.username}</span>}
         {user && (
           <>
             <Link to="/" className="hover:underline">
@@ -53,12 +54,15 @@ const Header = () => {
         {/* Desktop Auth Button */}
         <div className="hidden md:block">
           {user ? (
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 hover:bg-red-600 px-4 py-1 rounded"
-            >
-              Logout
-            </button>
+              <>
+                <span className="mr-4 text-lg">Hi {user.username}</span>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-500 hover:bg-red-600 px-4 py-1 rounded"
+                >
+                  Logout
+                </button>
+            </>
           ) : isLogin ? (
             <Link to="/register" className="hover:underline">
               Register

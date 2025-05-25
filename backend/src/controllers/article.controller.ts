@@ -66,9 +66,9 @@ export const deleteArticle = async (req: Request, res: Response): Promise<void> 
 //       res.json(article);
 // };
 
-export const importAllArticles = async (req: Request & {file?: any}, res: Response) => {
+export const importAllArticles = async (req: Request & { file?: any; user?: any }, res: Response) => {
   const file = req?.file;
-  console.log("Importing articles...: ", file);
+  const userId = (req as any).user?._id;
   if (!file) {
     res.status(400).json({ message: "No file uploaded" });
     return;
@@ -76,7 +76,7 @@ export const importAllArticles = async (req: Request & {file?: any}, res: Respon
 
   const content = file.buffer.toString("utf-8");
   try {
-    const articles = await importArticles(content);
+    const articles = await importArticles(content, userId);
     res.status(201).json({ message: "Articles imported successfully", articles });
   } catch (error: Error | any) {
     logger.error(`Import failed: ${error.message}`);

@@ -27,13 +27,13 @@ export const exportArticles = async () => {
 }
 
 
-export const importArticles = async (content: string) => {
+export const importArticles = async (content: string, author: string) => {
   const articles = await formatStrategy.import(content);
-
   const cleaned = articles.filter((article) => isValidArticle(article))
                       .map((article) => ({
                             title: article.title,
                             body: article.body,
+                            author,
                             views: article.views || 0,
                           }));
   if(!cleaned){

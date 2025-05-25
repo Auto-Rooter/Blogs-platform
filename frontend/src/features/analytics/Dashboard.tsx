@@ -33,7 +33,7 @@ const Dashboard = () => {
   
     const formData = new FormData();
     formData.append("file", file);
-  console.log("Importing file", file);
+
     try {
       await axios.post("/api/articles/import", formData,{
         headers: {
