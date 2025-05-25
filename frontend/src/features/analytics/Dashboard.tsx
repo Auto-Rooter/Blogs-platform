@@ -2,13 +2,14 @@ import { useTopArticles, useViewsByCountry } from "../../api/analytics";
 import axios from '../../api/axios';
 import ArticlesBarChart from "../../components/ArticlesBarChart";
 import PieCountriesChart from '../../components/PieCountriesChart';
+import { getFilenameWithTimestamp } from "../../utils/getFilenameWithTimeStamp";
 // import MapChart from '../../components/MapChart';
 
 const Dashboard = () => {
   // const { data: summary } = useSummary();
   const { data: top } = useTopArticles();
   const { data: countryViews, isLoading: loadingCountries } = useViewsByCountry();
-
+  
 
   const handleExport = async () => {
     try {
@@ -18,7 +19,7 @@ const Dashboard = () => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", `articles_${new Date().toUTCString()}.json`);
+      link.setAttribute("download", getFilenameWithTimestamp() || 'articles.json');
       document.body.appendChild(link);
       link.click();
       link.remove();
