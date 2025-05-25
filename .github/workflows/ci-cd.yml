@@ -57,7 +57,7 @@ jobs:
     outputs:
         uri: ${{ steps.image.outputs.uri }}
     env:
-        IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/blogs-backend
+        IMAGE_NAME: autorooter/blogs-backend
         IMAGE_TAG: ${{ github.sha }}
     steps:
         - name: Checkout code
@@ -82,7 +82,7 @@ jobs:
 
         - name: Set image URI
           id: image
-          run: echo "uri=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/blogs-backend:${{ github.sha }}" >> $GITHUB_OUTPUT
+          run: echo "uri=$IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
   # 3) Deploy with Trraform
   deploy:
