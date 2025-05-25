@@ -3,6 +3,8 @@ export interface Article {
     title: string;
     body: string;
     views: number;
+    ratings?: number[];
+    timeSpent?: number;
     createdAt: string;
     updatedAt: string;
 }

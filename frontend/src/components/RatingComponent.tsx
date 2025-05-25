@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { rateArticle } from '../api/ratings';
 import { getFingerprint } from '../hooks/useFingerprint'; 
+import { formateDuration } from '../utils/formatDuration';
 
 interface RatingProps {
     articleId: string;
@@ -36,7 +37,9 @@ const RatingComponent = ({articleId}: RatingProps) => {
   }
     return (
         <div className='mt-6'>
-            <p className='mb-2 font-bold'>Rate the Article</p>
+            { !submitted &&
+              <p className='mb-2 font-bold'>Rate the Article</p> 
+            }
             <div className='flex gap-2'>
                 { [1,2,3,4,5].map((value) => (
                     <button
@@ -49,10 +52,10 @@ const RatingComponent = ({articleId}: RatingProps) => {
                     </button>
                 ))
                 }
+                { submitted && (
+                    <i className='mt-2'>{rating}</i>
+                )}
             </div>
-            { submitted && (
-                <p className='text-sm text-green-600 mt-2'>Thanks for your rating</p>
-            )}
         </div>
   )
 }

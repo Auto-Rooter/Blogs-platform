@@ -1,27 +1,25 @@
-import axios from "../../api/axios";
 import { useState } from "react";
 import { useArticles } from "../../api/articles";
 import { Link } from "react-router-dom";
-import { QueryClient } from "@tanstack/react-query";
 import { useAuth } from "../../context/AuthContext";
-import { Article, ArticleResponse } from "../../types/article";
+import { Article } from "../../types/article";
+import { formateDuration } from '../../utils/formatDuration';
+import { avgRating } from "../../utils/getAvgRating";
+import DeleteArticle from "./DeleteArticle";
+
 
 const ArticleList = () => {
   const [page, setPage] = useState(1);
     const { data , isLoading } = useArticles(page);
-    const queryClient = new QueryClient();
     const { user } = useAuth();
     const isAuthor = user?.role === 'author';
     const isAdmin = user?.role === 'admin';
 
-
     if (isLoading) return <p>Loading...</p>;
 
-    const handleDelete = async (id: string) => {
-        if (!window.confirm("Are you sure?")) return;
-        await axios.delete(`/api/articles/${id}`);
-        queryClient.invalidateQueries({ queryKey: ["articles"] });
-    }
+    const getAvgRating = (ratings: number[]) => avgRating(ratings);
+    const getTimeSpent = (timeSpent: number) => formateDuration(timeSpent);
+
     return (
         <div>
         {user && isAuthor && (
@@ -45,15 +43,10 @@ const ArticleList = () => {
                     </i>
                     </Link>
                     <div className="flex justify-between items-center mt-4 text-sm text-gray-500">
-                    <span>👁️ {article.views} views</span>
-                    {user && isAdmin && (
-                        <button
-                        onClick={() => handleDelete(article._id)}
-                        className="text-red-500 hover:underline"
-                        >
-                        Delete
-                        </button>
-                    )}
+                      <span>👁️ {article.views} views</span>
+                      <span>⭐ {getAvgRating(article.ratings || [])} </span>
+                      <span>⏱ {getTimeSpent(article.timeSpent || 0)} </span>
+                      <DeleteArticle isAdmin={isAdmin} articleId={article._id}/>
                     </div>
               </div>
             ))}

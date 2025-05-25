@@ -29,7 +29,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (token) {
         const decoded = jwtDecode<DecodedUser>(token);
         setUser(decoded as DecodedUser);
-        console.log(">>>: " + JSON.stringify(decoded));
       } else {
         setUser(null);
       }
