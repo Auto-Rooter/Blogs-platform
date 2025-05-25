@@ -63,3 +63,5 @@ connectDB()
   .catch((error: Error) => {
     console.error('Error connecting to MongoDB:', error);
   });
+
+export default app;
