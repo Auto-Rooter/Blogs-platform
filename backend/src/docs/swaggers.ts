@@ -30,6 +30,24 @@ const swaggerOptions: swaggerJSDoc.Options = {
         },
       },
       schemas: {
+        Article: {
+          type: "object",
+          properties: {
+            _id:       { type: "string" },
+            title:     { type: "string" },
+            body:      { type: "string" },
+            views:     { type: "integer" },
+            ratings: {
+              type: "array",
+              items: { type: "integer" },
+            },
+            timeSpent:   { type: "integer" },
+            createdAt:   { type: "string", format: "date-time" },
+            updatedAt:   { type: "string", format: "date-time" },
+            author:      { type: "string", description: "Author’s user ID" },
+          },
+          required: ["_id", "title", "body"],
+        },
         UserSummary: {
           type: "object",
           properties: {
