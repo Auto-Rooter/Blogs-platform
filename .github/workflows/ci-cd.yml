@@ -57,32 +57,32 @@ jobs:
     outputs:
         uri: ${{ steps.image.outputs.uri }}
     env:
-      IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/blogs-backend
-      IMAGE_TAG: ${{ github.sha }}
+        IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/blogs-backend
+        IMAGE_TAG: ${{ github.sha }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+        - name: Checkout code
+          uses: actions/checkout@v4
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        - name: Log in to Docker Hub
+          uses: docker/login-action@v2
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build Docker image
-        run: |
-          docker build \
+        - name: Build Docker image
+          run: |
+            docker build \
             --file backend/Dockerfile \
             --tag $IMAGE_NAME:$IMAGE_TAG \
             backend
 
-      - name: Push Docker image
-        run: |
-          docker push $IMAGE_NAME:$IMAGE_TAG
+        - name: Push Docker image
+          run: |
+            docker push $IMAGE_NAME:$IMAGE_TAG
 
-      - name: Set image URI
-        id: image
-        run: echo "uri=$IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        - name: Set image URI
+          id: image
+          run: echo "uri=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/blogs-backend:${{ github.sha }}" >> $GITHUB_OUTPUT
 
   # 3) Deploy with Trraform
   deploy:
