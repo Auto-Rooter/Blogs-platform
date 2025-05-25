@@ -54,6 +54,8 @@ jobs:
   build-and-push-image:
     needs: build-and-test
     runs-on: ubuntu-latest
+    outputs:
+        uri: ${{ steps.image.outputs.uri }}
     env:
       IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/blogs-backend
       IMAGE_TAG: ${{ github.sha }}
