@@ -1,6 +1,7 @@
 import axios from "./axios";
 import { useQuery } from "@tanstack/react-query";
 import { Article } from "../types/article";
+import { CountryData } from "../types/countryData";
 
 export interface Summary {
     totalArticles: number;
@@ -18,6 +19,11 @@ export const fetchSummary = async (): Promise<Summary> => {
     return res.data;
 }
 
+export const fetchViewsByCountry = async (): Promise<CountryData[]> => {
+  const res = await axios.get("/api/analytics/views-by-country");
+  return res.data;
+}
+
 export const useTopArticles = () =>
     useQuery<Article[]>({
       queryKey: ["top-articles"],
@@ -29,3 +35,10 @@ export const useTopArticles = () =>
       queryKey: ["summary"],
       queryFn: fetchSummary,
     });
+
+  export const useViewsByCountry = () => {
+    return useQuery<CountryData[]>({
+      queryKey: ['viewsByCountry'],
+      queryFn: fetchViewsByCountry
+    }) 
+  }

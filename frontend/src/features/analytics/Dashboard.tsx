@@ -1,10 +1,14 @@
-import { useTopArticles, useSummary } from "../../api/analytics";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { useTopArticles, useViewsByCountry } from "../../api/analytics";
 import axios from '../../api/axios';
+import ArticlesBarChart from "../../components/ArticlesBarChart";
+import PieCountriesChart from '../../components/PieCountriesChart';
+// import MapChart from '../../components/MapChart';
 
 const Dashboard = () => {
-  const { data: summary } = useSummary();
+  // const { data: summary } = useSummary();
   const { data: top } = useTopArticles();
+  const { data: countryViews, isLoading: loadingCountries } = useViewsByCountry();
+
 
   const handleExport = async () => {
     try {
@@ -44,42 +48,43 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
         <div className="bg-white p-4 rounded shadow">
-        <div className="flex items-center gap-4 mb-6">
-          <button
-            onClick={handleExport}
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-          >
-            📤 Export Articles
-          </button>
+          <div className="flex items-baseline justify-end gap-4 mb-6">
+            <button
+              onClick={handleExport}
+              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            >
+              📤 Export Articles
+            </button>
 
-          <label className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer">
-            📥 Import Articles
-            <input
-              type="file"
-              accept=".json"
-              onChange={handleImport}
-              className="hidden"
-            />
-          </label>
+            <label className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer">
+              📥 Import Articles
+              <input
+                type="file"
+                accept=".json"
+                onChange={handleImport}
+                className="hidden"
+              />
+            </label>
+          </div>
         </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        {/* <div className="bg-white p-4 rounded shadow mt-6">
+          <h2 className="text-lg font-semibold mb-2">Views by Country</h2>
+          {loadingCountries ? (
+            <p>Loading map…</p>
+          ) : (
+            <div style={{ width: '700px', height: '400px' }}>
+              <MapChart data={countryViews || []} />
+            </div>
+          )}
+        </div> */}
+        <PieCountriesChart countryViews={countryViews} />
+        <ArticlesBarChart top={top} />
 
-        </div>
-
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="text-lg font-semibold mb-2">Top Articles</h2>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={top || []}>
-              <XAxis dataKey="title" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="views" fill="#3b82f6" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
       </div>
 
       <div className="bg-white p-4 rounded shadow">
