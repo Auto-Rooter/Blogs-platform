@@ -1,0 +1,4 @@
+container_image = YOUR_DOCKER_IMAGE_NAME
+mongo_uri       = YOUR_MONGO_URI
+jwt_secret      = YOUR_JWT_SECRET
+acm_certificate_arn = YOUR_ACM_CERT_ARN
