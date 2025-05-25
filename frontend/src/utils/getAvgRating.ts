@@ -1,3 +1,6 @@
-export const avgRating = (ratingsList: Array<number>) =>{
-    return ratingsList.length > 0 ? ratingsList.reduce((sum, r) => sum + r, 0) / ratingsList.length : 0;
-}
+export const avgRating = (ratingsList: number[]): number => {
+    if (ratingsList.length === 0) return 0;
+    const sum = ratingsList.reduce((total, r) => total + r, 0);
+    const avg = sum / ratingsList.length;
+    return Math.round(avg * 10) / 10;
+};
