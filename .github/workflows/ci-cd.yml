@@ -1,0 +1,113 @@
+name: CI/CD
+
+on:
+    push:
+      branches:
+        - main
+      paths:
+        - 'backend/**'
+    pull_request:
+      branches:
+        - main
+      paths:
+        - 'backend/**'
+
+jobs:
+  # 1) Checkout > install > lint/test(will enable it later MAybe with Husky) > build
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: backend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('backend/package-lock.json') }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: backend
+        run: npm ci
+
+      # - name: Run lint
+      #   working-directory: backend
+      #   run: npm run lint
+
+      - name: Run tests
+        working-directory: backend
+        run: npm test
+
+      - name: Build TypeScript
+        working-directory: backend
+        run: npm run build
+
+  # 2) Build and push Docker image
+  build-and-push-image:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/blogs-backend
+      IMAGE_TAG: ${{ github.sha }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            --file backend/Dockerfile \
+            --tag $IMAGE_NAME:$IMAGE_TAG \
+            backend
+
+      - name: Push Docker image
+        run: |
+          docker push $IMAGE_NAME:$IMAGE_TAG
+
+      - name: Set image URI
+        id: image
+        run: echo "uri=$IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+  # 3) Deploy with Trraform
+  deploy:
+    needs: build-and-push-image
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID:           ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY:       ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION:                  ${{ secrets.AWS_REGION }}
+      TF_VAR_container_image:      ${{ needs.build-and-push-image.outputs.uri }}
+      TF_VAR_mongo_uri:            ${{ secrets.MONGO_URI }}
+      TF_VAR_jwt_secret:           ${{ secrets.JWT_SECRET }}
+      TF_VAR_acm_certificate_arn:  ${{ secrets.ACM_CERT_ARN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: terraform
+        run: terraform plan -out=plan.tfplan
+
+      - name: Terraform Apply
+        working-directory: terraform
+        run: terraform apply -auto-approve plan.tfplan

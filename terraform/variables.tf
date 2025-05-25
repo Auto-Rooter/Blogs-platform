@@ -29,7 +29,7 @@ variable "availability_zones" {
 }
 
 variable "container_image" {
-  description = "Docker Image URL"
+  description = "Docker Image URL for Backend"
   type        = string
 }
 

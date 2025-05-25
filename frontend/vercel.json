@@ -1,0 +1,17 @@
+{
+    "projectSettings": {
+      "rootDirectory": "frontend"
+    },
+    "builds": [
+      {
+        "src": "frontend/package.json",
+        "use": "@vercel/static-build",
+        "config": { "distDir": "build" }
+      }
+    ],
+    "installCommand": "npm install --legacy-peer-deps",
+    "build": {
+      "ignoreCommand": "if [ \\\"$VERCEL_GIT_COMMIT_REF\\\" != \\\"main\\\" ]; then exit 0; fi; if git diff --quiet \\\"$VERCEL_GIT_COMMIT_SHA^\\\" \\\"$VERCEL_GIT_COMMIT_SHA\\\" -- frontend/; then exit 0; fi; exit 1"
+    }
+  }
+  
