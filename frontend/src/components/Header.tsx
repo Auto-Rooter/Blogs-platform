@@ -24,7 +24,6 @@ const Header = () => {
 
       {/* Desktop Links */}
       <div className="hidden md:flex items-center space-x-4">
-        {user && <span className="text-lg">Hi, {user.username}</span>}
         {user && (
           <>
             <Link to="/" className="hover:underline">
