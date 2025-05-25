@@ -88,7 +88,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY:       ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION:                  ${{ secrets.AWS_REGION }}
       TF_VAR_container_image:      ${{ needs.build-and-push-image.outputs.uri }}
-      TF_VAR_mongo_uri:            ${{ secrets.MONGO_URI }}
+      TF_VAR_mongo_uri:            ${{ secrets.MONGODB_URI }}
       TF_VAR_jwt_secret:           ${{ secrets.JWT_SECRET }}
       TF_VAR_acm_certificate_arn:  ${{ secrets.ACM_CERT_ARN }}
     steps:
