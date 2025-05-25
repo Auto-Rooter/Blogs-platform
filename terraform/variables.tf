@@ -44,3 +44,8 @@ variable "jwt_secret" {
   type        = string
   sensitive   = true
 }
+
+variable "acm_certificate_arn" {
+  description = "Certificate for Load Balancer"
+  type        = string
+}
