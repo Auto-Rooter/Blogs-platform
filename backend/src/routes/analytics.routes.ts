@@ -1,5 +1,5 @@
 import express from "express";
-import { getTopArticles, getSummary } from "../controllers/analytics.controller";
+import { getTopArticles, getSummary, getViewsByCountry } from "../controllers/analytics.controller";
 import { verifyJWT } from "../middlewares/auth";
 import { requireRole } from "../middlewares/roles";
 
@@ -30,5 +30,7 @@ router.get("/top", getTopArticles);
  *         description: Summary object
  */
 router.get("/summary", getSummary);
+
+router.get("/views-by-country", getViewsByCountry)
 
 export default router;
