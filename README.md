@@ -107,7 +107,9 @@ README.md
 | JWT\_SECRET              | Secret for signing JWT tokens              |
 | AWS\_ACCESS\_KEY\_ID     | AWS credentials for Terraform              |
 | AWS\_SECRET\_ACCESS\_KEY | AWS credentials for Terraform              |
-
+---
+## AWS Infra:
+![](imgs/AWS_Infra.png)
 ---
 ## Screenshots
 ![](imgs/Page_1.png)
