@@ -1,0 +1,9 @@
+{
+  "_id": { "$oid": "68467db1749c228e60fd7967" },
+  "username": "alex",
+  "password": "$2b$10$Bvcn0QgPOvIxSmLWHN1kKuaLut1WO1CXYN828zCSrpqQ/tMvLdyG.",
+  "role": "author",
+  "createdAt": { "$date": { "$numberLong": "1749450161244" } },
+  "updatedAt": { "$date": { "$numberLong": "1749459263634" } },
+  "__v": { "$numberInt": "0" }
+}
