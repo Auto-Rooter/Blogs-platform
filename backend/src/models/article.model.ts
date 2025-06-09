@@ -2,12 +2,14 @@ import mongoose from "mongoose";
 
 const ArticleSchema = new mongoose.Schema({
     title: {
-        type: String,
-        required: true,
-    },
+        en: { type: String, required: true },
+        es: { type: String },
+        de: { type: String }
+        },
     body: {
-        type: String,
-        required: true,
+        en: { type: String, required: true },
+        es: { type: String },
+        de: { type: String }
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,

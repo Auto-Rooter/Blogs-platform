@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node dist/app.js",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "migrate:articles": "ts-node scripts/migrateArticlesToMultiLang.ts",
     "build": "tsc",
     "test": "jest"
   },

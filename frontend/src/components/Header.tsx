@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import LanguageSelector from "./LanguageSelector";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
     const [open, setOpen] = useState(false);
@@ -19,7 +22,7 @@ const Header = () => {
     <div className="flex items-center justify-between">
       {/* Logo */}
       <Link to="/" className="font-bold text-lg">
-        Blogs123
+        {t('header.logo')}
       </Link>
 
       {/* Desktop Links */}
@@ -27,48 +30,50 @@ const Header = () => {
         {user && (
           <>
             <Link to="/" className="hover:underline">
-              Articles
+              {t('header.articles')}
             </Link>
             {user.role === "author" && (
               <Link to="/create-article" className="hover:underline">
-                New Article
+                {t('header.newArticle')}
               </Link>
             )}
             {user.role === "admin" && (
               <>
                 <Link to="/dashboard" className="hover:underline">
-                  Dashboard
+                  {t('header.dashboard')}
                 </Link>
                 <Link to="/admin/users" className="hover:underline">
-                  Users
+                  {t('header.users')}
                 </Link>
               </>
             )}
           </>
         )}
       </div>
-
+      <div className="flex items-center">
+        <LanguageSelector/>
+      </div>
       {/* Authentication Button / Mobile Toggle */}
       <div className="flex items-center">
         {/* Desktop Auth Button */}
         <div className="hidden md:block">
           {user ? (
               <>
-                <span className="mr-4 text-lg">Hi {user.username}</span>
+                <span className="mr-4 text-lg">{t('header.greeting', { username: user.username })}</span>
                 <button
                   onClick={handleLogout}
                   className="bg-red-500 hover:bg-red-600 px-4 py-1 rounded"
                 >
-                  Logout
+                  {t('header.logout')}
                 </button>
             </>
           ) : isLogin ? (
             <Link to="/register" className="hover:underline">
-              Register
+              {t('header.register')}
             </Link>
           ) : (
             <Link to="/login" className="hover:underline">
-              Login
+              {t('header.login')}
             </Link>
           )}
         </div>
@@ -114,7 +119,7 @@ const Header = () => {
               className="block hover:underline"
               onClick={() => setOpen(false)}
             >
-              Articles
+              {t('header.articles')}
             </Link>
             {user.role === "author" && (
               <Link
@@ -122,7 +127,7 @@ const Header = () => {
                 className="block hover:underline"
                 onClick={() => setOpen(false)}
               >
-                New Article
+                {t('header.newArticle')}
               </Link>
             )}
             {user.role === "admin" && (
@@ -132,14 +137,14 @@ const Header = () => {
                   className="block hover:underline"
                   onClick={() => setOpen(false)}
                 >
-                  Dashboard
+                  {t('header.dashboard')}
                 </Link>
                 <Link
                   to="/admin/users"
                   className="block hover:underline"
                   onClick={() => setOpen(false)}
                 >
-                  Users
+                  {t('header.newArticle')}
                 </Link>
               </>
             )}
@@ -151,7 +156,7 @@ const Header = () => {
             onClick={handleLogout}
             className="w-full text-left px-2 py-1 bg-red-500 rounded"
           >
-            Logout
+            {t('header.logout')}
           </button>
         ) : isLogin ? (
           <Link
@@ -159,7 +164,7 @@ const Header = () => {
             className="block hover:underline"
             onClick={() => setOpen(false)}
           >
-            Register
+            {t('header.register')}
           </Link>
         ) : (
           <Link
@@ -167,7 +172,7 @@ const Header = () => {
             className="block hover:underline"
             onClick={() => setOpen(false)}
           >
-            Login
+            {t('header.login')}
           </Link>
         )}
       </div>

@@ -1,0 +1,18 @@
+{
+    "article": {
+        "title": "Titel",
+        "content": "Inhalt",
+        "read_more": "Weiterlesen"
+    },
+    "header": {
+        "logo": "Blogs123",
+        "articles": "Artikel",
+        "newArticle": "Neuer Artikel",
+        "dashboard": "Dashboard",
+        "users": "Benutzer",
+        "greeting": "Hallo {{username}}",
+        "logout": "Abmelden",
+        "register": "Registrieren",
+        "login": "Anmelden"
+    }
+}
