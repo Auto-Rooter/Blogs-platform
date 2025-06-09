@@ -1,0 +1,11 @@
+{
+  "_id": { "$oid": "6845a5ff749c228e60fd78a3" },
+  "articleId": { "$oid": "6833792e0ad0bc5784a25811" },
+  "fingerprint": "395ce1fa8a46d19f05440b9c77c88453",
+  "country": "DK",
+  "ip": "185.212.169.29",
+  "viewedAt": { "$date": { "$numberLong": "1749394943266" } },
+  "createdAt": { "$date": { "$numberLong": "1749394943267" } },
+  "updatedAt": { "$date": { "$numberLong": "1749394943267" } },
+  "__v": { "$numberInt": "0" }
+}
