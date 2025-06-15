@@ -2,12 +2,12 @@
 
 ## Live URLs
 
-- **API:** https://api.blogs123-platform.click/
-- **Swagger UI:** https://api.blogs123-platform.click/api/docs/
-- **Website:** https://blogs-platform-liart.vercel.app
-- **Grafana CloudWatch Logs:** https://autorooter.grafana.net/dashboard/snapshot/HTVkTtcsxl8JH6ZJbnuURityyW5ZeUYh?orgId=0&from=2025-05-23T16:00:49.244Z&to=2025-05-25T16:00:49.244Z&timezone=browser&viewPanel=panel-1
+- **API:** ~~https://api.blogs123-platform.click/~~
+- **Swagger UI:** ~~https://api.blogs123-platform.click/api/docs/~~
+- **Website:** ~~https://blogs-platform-liart.vercel.app~~
+- **Grafana CloudWatch Logs:** ~~https://autorooter.grafana.net/dashboard/snapshot/HTVkTtcsxl8JH6ZJbnuURityyW5ZeUYh?orgId=0&from=2025-05-23T16:00:49.244Z&to=2025-05-25T16:00:49.244Z&timezone=browser&viewPanel=panel-1~~
 
-- **Grafana Requests:** https://autorooter.grafana.net/dashboard/snapshot/IsBuIDyGRhUNkPLUm0TpQ3sXXqftQQ2e?orgId=0&from=2025-05-25T09:55:29.272Z&to=2025-05-25T15:55:29.272Z&timezone=browser&viewPanel=panel-1
+- **Grafana Requests:** ~~https://autorooter.grafana.net/dashboard/snapshot/IsBuIDyGRhUNkPLUm0TpQ3sXXqftQQ2e?orgId=0&from=2025-05-25T09:55:29.272Z&to=2025-05-25T15:55:29.272Z&timezone=browser&viewPanel=panel-1~~
 
 A scalable blog platform built with the MERN stack (TypeScript) and AWS, featuring:
 
